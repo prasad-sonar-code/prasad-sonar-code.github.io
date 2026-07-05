@@ -5,938 +5,304 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prasad Sonar — DevOps & SRE Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0a0c10;
-    --surface: #111318;
-    --surface2: #1a1d24;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --text: #e8eaf0;
-    --muted: #7a7f8e;
-    --accent: #00d4a4;
-    --accent2: #0077ff;
-    --accent3: #ff5c5c;
-    --glow: rgba(0, 212, 164, 0.15);
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Syne', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* Custom cursor */
-  .cursor {
-    width: 8px; height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s;
-  }
-  .cursor-ring {
-    width: 28px; height: 28px;
-    border: 1.5px solid var(--accent);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9998;
-    opacity: 0.5;
-    transition: transform 0.15s ease, width 0.2s, height 0.2s;
-  }
-
-  /* Grid lines background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Nav */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.25rem 3rem;
-    background: rgba(10,12,16,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .logo {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-  }
-
-  .nav-links {
-    display: flex; gap: 2.5rem; list-style: none;
-  }
-  .nav-links a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-
-  .nav-cta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--accent);
-    text-decoration: none;
-    border: 1px solid var(--accent);
-    padding: 0.5rem 1rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: background 0.2s, color 0.2s;
-  }
-  .nav-cta:hover { background: var(--accent); color: var(--bg); }
-
-  /* Hero */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex; align-items: center;
-    padding: 8rem 3rem 4rem;
-    z-index: 1;
-  }
-
-  .hero-content { max-width: 900px; }
-
-  .hero-tag {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-  }
-  .hero-tag::before {
-    content: '';
-    display: inline-block;
-    width: 24px; height: 1px;
-    background: var(--accent);
-  }
-
-  .hero h1 {
-    font-size: clamp(3.5rem, 8vw, 7rem);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
-  }
-
-  .hero h1 .name-line {
-    display: block;
-    color: var(--text);
-  }
-  .hero h1 .role-line {
-    display: block;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.25);
-  }
-
-  .hero-desc {
-    font-size: 1.05rem;
-    color: var(--muted);
-    max-width: 520px;
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
-    font-weight: 400;
-  }
-
-  .hero-links {
-    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--bg);
-    background: var(--accent);
-    padding: 0.85rem 1.75rem;
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px var(--glow);
-  }
-
-  .btn-ghost {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--muted);
-    transition: color 0.2s;
-    display: inline-flex; align-items: center; gap: 0.5rem;
-  }
-  .btn-ghost:hover { color: var(--text); }
-
-  .hero-stats {
-    position: absolute; right: 3rem; bottom: 3rem;
-    display: flex; flex-direction: column; gap: 1.5rem;
-    text-align: right;
-  }
-  .stat-item {}
-  .stat-num {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1;
-    display: block;
-  }
-  .stat-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    display: block;
-    margin-top: 0.25rem;
-  }
-
-  /* Terminal line */
-  .terminal-line {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--muted);
-    display: flex; align-items: center; gap: 0.75rem;
-    margin-bottom: 2rem;
-  }
-  .terminal-line .prompt { color: var(--accent); }
-  .terminal-line .cmd { color: var(--text); }
-  .terminal-line .cursor-blink {
-    display: inline-block;
-    width: 8px; height: 14px;
-    background: var(--accent);
-    animation: blink 1s step-end infinite;
-    vertical-align: middle;
-  }
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-  /* Sections */
-  section {
-    position: relative;
-    z-index: 1;
-    padding: 6rem 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    display: flex; align-items: baseline; gap: 1rem;
-    margin-bottom: 3.5rem;
-  }
-  .section-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-  }
-  .section-title {
-    font-size: 2.25rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-  .section-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-    margin-left: 1rem;
-  }
-
-  /* Skills */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
-
-  .skill-card {
-    background: var(--surface);
-    padding: 1.75rem;
-    transition: background 0.2s;
-  }
-  .skill-card:hover { background: var(--surface2); }
-
-  .skill-category {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-  .skill-name {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    color: var(--text);
-  }
-  .skill-tags {
-    display: flex; flex-wrap: wrap; gap: 0.4rem;
-  }
-  .skill-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    padding: 0.25rem 0.6rem;
-    letter-spacing: 0.05em;
-  }
-
-  /* Projects */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .project-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 2rem;
-    transition: border-color 0.2s, transform 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 0;
-    background: var(--accent);
-    transition: height 0.3s;
-  }
-  .project-card:hover { border-color: var(--border2); transform: translateY(-3px); }
-  .project-card:hover::before { height: 100%; }
-
-  .project-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    opacity: 0.6;
-    margin-bottom: 1rem;
-    display: block;
-  }
-  .project-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: var(--text);
-  }
-  .project-desc {
-    font-size: 0.875rem;
-    color: var(--muted);
-    line-height: 1.65;
-    margin-bottom: 1.25rem;
-    font-weight: 400;
-  }
-  .project-stack {
-    display: flex; flex-wrap: wrap; gap: 0.4rem;
-  }
-  .stack-pill {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-    background: rgba(0,212,164,0.08);
-    border: 1px solid rgba(0,212,164,0.2);
-    padding: 0.2rem 0.6rem;
-    letter-spacing: 0.05em;
-  }
-
-  /* Certs */
-  .certs-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
-  }
-
-  .cert-item {
-    display: flex; align-items: center; gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    transition: border-color 0.2s;
-  }
-  .cert-item:hover { border-color: var(--accent); }
-
-  .cert-icon {
-    width: 36px; height: 36px;
-    background: rgba(0,212,164,0.1);
-    border: 1px solid rgba(0,212,164,0.2);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-size: 1rem;
-  }
-  .cert-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .cert-issuer {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    margin-top: 0.2rem;
-    letter-spacing: 0.05em;
-  }
-
-  /* Contact */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: start;
-  }
-
-  .contact-text h2 {
-    font-size: 3rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 1.25rem;
-  }
-  .contact-text p {
-    font-size: 0.95rem;
-    color: var(--muted);
-    line-height: 1.7;
-    font-weight: 400;
-    max-width: 380px;
-  }
-
-  .contact-links {
-    display: flex; flex-direction: column; gap: 1rem;
-  }
-
-  .contact-link {
-    display: flex; align-items: center; gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    text-decoration: none;
-    transition: border-color 0.2s, background 0.2s;
-    color: var(--text);
-  }
-  .contact-link:hover { border-color: var(--accent); background: var(--surface2); }
-
-  .contact-link-icon {
-    width: 36px; height: 36px;
-    background: var(--surface2);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-size: 1rem;
-  }
-  .contact-link-info {}
-  .contact-link-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    display: block;
-  }
-  .contact-link-value {
-    font-size: 0.9rem;
-    color: var(--text);
-    font-weight: 500;
-    display: block;
-    margin-top: 0.15rem;
-  }
-  .contact-link-arrow {
-    margin-left: auto;
-    font-size: 1.1rem;
-    color: var(--muted);
-    transition: transform 0.2s, color 0.2s;
-  }
-  .contact-link:hover .contact-link-arrow { transform: translateX(4px); color: var(--accent); }
-
-  /* Footer */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem 3rem;
-    display: flex; justify-content: space-between; align-items: center;
-    position: relative; z-index: 1;
-  }
-  .footer-left {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-  .footer-right {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-  .footer-right span { color: var(--accent); }
-
-  /* Accent glow blob */
-  .glow-blob {
-    position: fixed;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(0,212,164,0.06) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    transition: transform 0.8s ease;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero { padding: 7rem 1.5rem 8rem; }
-    section { padding: 4rem 1.5rem; }
-    .hero-stats { position: static; flex-direction: row; margin-top: 3rem; }
-    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .hero h1 { font-size: clamp(2.5rem, 10vw, 4rem); }
-    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
-  }
-
-  /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .fade-up { animation: fadeUp 0.6s ease forwards; }
-  .fade-up:nth-child(2) { animation-delay: 0.1s; }
-  .fade-up:nth-child(3) { animation-delay: 0.2s; }
-  .fade-up:nth-child(4) { animation-delay: 0.3s; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #070809; --bg2: #0d0f12; --surface: #111418; --surface2: #181c22;
+  --border: rgba(255,255,255,0.06); --border2: rgba(255,255,255,0.12);
+  --text: #e2e8f0; --muted: #64748b; --muted2: #94a3b8;
+  --accent: #00ffaa; --accent-dim: rgba(0,255,170,0.1); --accent-glow: rgba(0,255,170,0.25);
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; cursor: none; }
+#cur, #cur-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; border-radius: 50%; transform: translate(-50%,-50%); }
+#cur { width: 6px; height: 6px; background: var(--accent); z-index: 10000; }
+#cur-ring { width: 30px; height: 30px; border: 1px solid rgba(0,255,170,.35); transition: width .2s, height .2s; }
+#orb { position: fixed; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0,255,170,.04) 0%, transparent 65%); border-radius: 50%; pointer-events: none; z-index: 0; transform: translate(-50%,-50%); transition: left 1s ease, top 1s ease; }
+body::before { content:''; position:fixed; inset:0; background-image: linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px); background-size:64px 64px; pointer-events:none; z-index:0; }
+nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.1rem 3rem; background:rgba(7,8,9,.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+.nav-logo { font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--accent); letter-spacing:.05em; }
+.nav-logo span { color:var(--muted2); }
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a { font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--muted); text-decoration:none; letter-spacing:.1em; text-transform:uppercase; transition:color .2s; }
+.nav-links a:hover { color:var(--accent); }
+.nav-right { display:flex; gap:.75rem; }
+.nav-btn { font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; text-decoration:none; padding:.5rem 1.1rem; border:1px solid; transition:all .2s; }
+.nav-btn.ghost { color:var(--muted2); border-color:var(--border2); }
+.nav-btn.ghost:hover { color:var(--accent); border-color:var(--accent); }
+.nav-btn.solid { color:var(--bg); background:var(--accent); border-color:var(--accent); }
+.nav-btn.solid:hover { box-shadow:0 0 24px var(--accent-glow); }
+.hero { position:relative; z-index:1; min-height:100vh; display:flex; align-items:center; padding:9rem 3rem 5rem; }
+.hero-inner { max-width:760px; }
+.hero-badge { display:inline-flex; align-items:center; gap:.6rem; font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); letter-spacing:.12em; text-transform:uppercase; margin-bottom:2rem; }
+.hero-badge::before { content:''; display:block; width:28px; height:1px; background:var(--accent); }
+.dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 var(--accent-glow);} 50%{box-shadow:0 0 0 7px transparent;} }
+h1.hero-title { font-size:clamp(3.8rem,9vw,7.5rem); font-weight:800; line-height:.92; letter-spacing:-.03em; margin-bottom:1.75rem; }
+.line1 { display:block; color:var(--text); }
+.line2 { display:block; color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,.16); }
+.typed-text { color:var(--accent); -webkit-text-stroke:0; }
+.hero-sub { font-size:1rem; color:var(--muted2); line-height:1.8; max-width:500px; margin-bottom:2.5rem; font-weight:400; }
+.hero-actions { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:4rem; }
+.btn { font-family:'JetBrains Mono',monospace; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; text-decoration:none; padding:.85rem 1.75rem; display:inline-flex; align-items:center; gap:.5rem; transition:all .2s; border:1px solid transparent; }
+.btn-accent { background:var(--accent); color:var(--bg); }
+.btn-accent:hover { box-shadow:0 0 30px var(--accent-glow); transform:translateY(-2px); }
+.btn-outline { border-color:var(--border2); color:var(--muted2); }
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+.hero-stats { display:flex; gap:3rem; padding-top:2rem; border-top:1px solid var(--border); flex-wrap:wrap; }
+.stat-num { font-size:2.4rem; font-weight:800; color:var(--text); line-height:1; display:block; }
+.stat-num span { color:var(--accent); }
+.stat-lbl { font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; display:block; margin-top:.3rem; }
+.sw { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:6rem 3rem; }
+.sh { display:flex; align-items:center; gap:1.25rem; margin-bottom:4rem; }
+.snum { font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent); letter-spacing:.12em; flex-shrink:0; }
+.stitle { font-size:2.5rem; font-weight:800; letter-spacing:-.025em; }
+.sline { flex:1; height:1px; background:var(--border); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+.about-text p { font-size:.95rem; color:var(--muted2); line-height:1.8; margin-bottom:1.25rem; font-weight:400; }
+.about-text p strong { color:var(--text); font-weight:600; }
+.hl { color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:.85em; }
+.about-card { background:var(--surface); border:1px solid var(--border); padding:2rem; }
+.act { font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--accent); letter-spacing:.12em; text-transform:uppercase; margin-bottom:1.5rem; }
+.ir { display:flex; justify-content:space-between; align-items:center; padding:.75rem 0; border-bottom:1px solid var(--border); font-size:.875rem; }
+.ir:last-child { border-bottom:none; }
+.ik { color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:.72rem; }
+.iv { color:var(--text); font-weight:500; text-align:right; }
+.iv.g { color:var(--accent); }
+.skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); }
+.skill-card { background:var(--surface); padding:1.75rem; transition:background .2s; }
+.skill-card:hover { background:var(--surface2); }
+.scat { font-family:'JetBrains Mono',monospace; font-size:.6rem; color:var(--accent); letter-spacing:.14em; text-transform:uppercase; margin-bottom:.9rem; }
+.sname { font-size:.95rem; font-weight:700; color:var(--text); margin-bottom:.75rem; }
+.tags { display:flex; flex-wrap:wrap; gap:.35rem; }
+.tag { font-family:'JetBrains Mono',monospace; font-size:.6rem; color:var(--muted2); background:var(--bg2); border:1px solid var(--border2); padding:.22rem .6rem; letter-spacing:.04em; }
+.projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1.25rem; }
+.pc { background:var(--surface); border:1px solid var(--border); padding:1.75rem 2rem; position:relative; overflow:hidden; transition:border-color .25s, transform .25s; display:flex; flex-direction:column; }
+.pc::after { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg,var(--accent),#3b82f6); transform:scaleX(0); transform-origin:left; transition:transform .35s ease; }
+.pc:hover { border-color:var(--border2); transform:translateY(-4px); }
+.pc:hover::after { transform:scaleX(1); }
+.ph { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
+.pnum { font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--muted); letter-spacing:.1em; }
+.plink { font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:.3rem; transition:color .2s; }
+.plink:hover { color:var(--accent); }
+.ptitle { font-size:1.05rem; font-weight:700; color:var(--text); margin-bottom:.6rem; }
+.pdesc { font-size:.83rem; color:var(--muted2); line-height:1.65; margin-bottom:1.25rem; flex:1; font-weight:400; }
+.ps { display:flex; flex-wrap:wrap; gap:.35rem; }
+.pill { font-family:'JetBrains Mono',monospace; font-size:.6rem; color:var(--accent); background:var(--accent-dim); border:1px solid rgba(0,255,170,.2); padding:.2rem .6rem; letter-spacing:.04em; }
+.certs-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; }
+.cc { display:flex; align-items:center; gap:1rem; padding:1.25rem 1.5rem; background:var(--surface); border:1px solid var(--border); transition:border-color .2s; }
+.cc:hover { border-color:var(--accent); }
+.ci { width:40px; height:40px; flex-shrink:0; background:var(--accent-dim); border:1px solid rgba(0,255,170,.2); display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+.cn { font-size:.9rem; font-weight:600; color:var(--text); }
+.ciss { font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--muted); margin-top:.2rem; letter-spacing:.05em; }
+.contact-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:5rem; align-items:start; }
+.ch { font-size:clamp(2.5rem,5vw,3.8rem); font-weight:800; letter-spacing:-.03em; line-height:1.05; margin-bottom:1.25rem; }
+.ch span { color:var(--accent); }
+.csub { font-size:.95rem; color:var(--muted2); line-height:1.75; max-width:400px; margin-bottom:2rem; font-weight:400; }
+.clinks { display:flex; flex-direction:column; gap:.85rem; }
+.clink { display:flex; align-items:center; gap:1rem; padding:1.1rem 1.4rem; background:var(--surface); border:1px solid var(--border); text-decoration:none; color:var(--text); transition:border-color .2s, background .2s; }
+.clink:hover { border-color:var(--accent); background:var(--surface2); }
+.cicon { width:36px; height:36px; background:var(--surface2); display:flex; align-items:center; justify-content:center; font-size:.85rem; font-family:'JetBrains Mono',monospace; color:var(--accent); flex-shrink:0; }
+.clbl { font-family:'JetBrains Mono',monospace; font-size:.6rem; color:var(--accent); letter-spacing:.12em; text-transform:uppercase; display:block; }
+.cval { font-size:.875rem; font-weight:500; color:var(--text); margin-top:.15rem; display:block; }
+.carr { margin-left:auto; color:var(--muted); font-size:1rem; transition:transform .2s, color .2s; }
+.clink:hover .carr { transform:translateX(4px); color:var(--accent); }
+footer { position:relative; z-index:1; border-top:1px solid var(--border); padding:1.75rem 3rem; display:flex; justify-content:space-between; align-items:center; }
+.fl, .fr { font-family:'JetBrains Mono',monospace; font-size:.65rem; color:var(--muted); letter-spacing:.08em; }
+.fr span { color:var(--accent); }
+.divider { position:relative; z-index:1; height:1px; background:var(--border); max-width:1200px; margin:0 auto; }
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;} .nav-links{display:none;}
+  .hero{padding:7rem 1.5rem 4rem;} .sw{padding:4rem 1.5rem;}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .hero-stats{gap:1.5rem;}
+  footer{padding:1.5rem;flex-direction:column;gap:.5rem;text-align:center;}
+}
 </style>
 </head>
 <body>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div id="orb"></div>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="glow-blob" id="glowBlob"></div>
-
-<!-- Nav -->
 <nav>
-  <div class="logo">ps@devops:~$</div>
+  <div class="nav-logo">prasad<span>@devops</span>:~$</div>
   <ul class="nav-links">
+    <li><a href="#about">About</a></li>
     <li><a href="#skills">Stack</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#certs">Certs</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="https://github.com/prasad-sonar-code" class="nav-cta" target="_blank">GitHub ↗</a>
+  <div class="nav-right">
+    <a href="https://github.com/prasad-sonar-code" target="_blank" class="nav-btn ghost">GitHub ↗</a>
+    <a href="#" id="resumeBtn" class="nav-btn solid">Resume ↓</a>
+  </div>
 </nav>
 
-<!-- Hero -->
-<div class="hero" id="home">
-  <div class="hero-content">
-    <div class="hero-tag">Available for internship · 2025</div>
-
-    <div class="terminal-line fade-up">
-      <span class="prompt">~/portfolio</span>
-      <span class="cmd">whoami</span>
-      <span class="cursor-blink"></span>
-    </div>
-
-    <h1 class="fade-up">
-      <span class="name-line">Prasad<br>Sonar</span>
-      <span class="role-line">DevOps &<br>SRE</span>
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-badge"><div class="dot"></div>Available for internship · 2025</div>
+    <h1 class="hero-title">
+      <span class="line1">Prasad Sonar</span>
+      <span class="line2"><span class="typed-text" id="typed"></span><span id="tcur">_</span></span>
     </h1>
-
-    <p class="hero-desc fade-up">
-      Electrical Engineering student at Gangamai College of Engineering, Dhule.
-      Building production-grade infrastructure with AWS, Kubernetes, Terraform,
-      and observability tooling. 11 projects shipped.
-    </p>
-
-    <div class="hero-links fade-up">
-      <a href="#contact" class="btn-primary">Get in touch →</a>
-      <a href="#projects" class="btn-ghost">View projects ↓</a>
+    <p class="hero-sub">Electrical Engineering student building production-grade DevOps infrastructure. Hands-on with AWS, Kubernetes, Terraform, Ansible, and the full observability stack — 16 projects shipped and counting.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-accent">Get in touch →</a>
+      <a href="#projects" class="btn btn-outline">View projects ↓</a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-num">16<span>+</span></span><span class="stat-lbl">Projects</span></div>
+      <div><span class="stat-num">6</span><span class="stat-lbl">Certifications</span></div>
+      <div><span class="stat-num">2<span>nd</span></span><span class="stat-lbl">Year E.E.</span></div>
+      <div><span class="stat-num">1<span>+</span></span><span class="stat-lbl">Years Building</span></div>
     </div>
   </div>
+</section>
 
-  <div class="hero-stats">
-    <div class="stat-item">
-      <span class="stat-num">11</span>
-      <span class="stat-label">Projects</span>
+<div class="divider"></div>
+
+<div class="sw" id="about">
+  <div class="sh reveal"><span class="snum">// 01</span><h2 class="stitle">About</h2><div class="sline"></div></div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm <strong>Prasad Sonar</strong>, a 2nd-year Electrical Engineering student at <strong>Gangamai College of Engineering, Dhule</strong> — going deep into DevOps and Site Reliability Engineering.</p>
+      <p>My engineering background gives me a systems-level mindset that most software-only developers don't have. I think about <span class="hl">reliability</span>, <span class="hl">observability</span>, and <span class="hl">fault tolerance</span> the same way an electrical engineer thinks about circuit resilience.</p>
+      <p>I've built and shipped 16+ real-world DevOps projects covering the full lifecycle — from infrastructure provisioning with Terraform, container orchestration on Kubernetes, CI/CD pipelines with GitHub Actions, to centralized logging with ELK and monitoring with Prometheus + Grafana.</p>
+      <p>Currently targeting <strong>DevOps / SRE internship</strong> roles at companies like Red Hat, Cisco, IBM, NTT Data, and HPE.</p>
     </div>
-    <div class="stat-item">
-      <span class="stat-num">6</span>
-      <span class="stat-label">Certifications</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">2nd</span>
-      <span class="stat-label">Year, E.E.</span>
+    <div class="about-card reveal">
+      <div class="act">// profile.json</div>
+      <div class="ir"><span class="ik">name</span><span class="iv">Prasad Mahesh Sonar</span></div>
+      <div class="ir"><span class="ik">role</span><span class="iv g">DevOps / SRE Intern</span></div>
+      <div class="ir"><span class="ik">college</span><span class="iv">Gangamai CoE, Dhule</span></div>
+      <div class="ir"><span class="ik">degree</span><span class="iv">B.E. Electrical Engg.</span></div>
+      <div class="ir"><span class="ik">year</span><span class="iv">2nd Year</span></div>
+      <div class="ir"><span class="ik">location</span><span class="iv">Dhule, Maharashtra 🇮🇳</span></div>
+      <div class="ir"><span class="ik">status</span><span class="iv g">● Open to opportunities</span></div>
     </div>
   </div>
 </div>
 
-<!-- Skills -->
-<section id="skills">
-  <div class="section-header">
-    <span class="section-num">01</span>
-    <h2 class="section-title">Tech Stack</h2>
-    <div class="section-line"></div>
-  </div>
+<div class="divider"></div>
 
-  <div class="skills-grid">
-    <div class="skill-card">
-      <div class="skill-category">Cloud</div>
-      <div class="skill-name">AWS</div>
-      <div class="skill-tags">
-        <span class="skill-tag">EC2</span>
-        <span class="skill-tag">S3</span>
-        <span class="skill-tag">VPC</span>
-        <span class="skill-tag">IAM</span>
-        <span class="skill-tag">Lambda</span>
-        <span class="skill-tag">CloudWatch</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-category">IaC & Containers</div>
-      <div class="skill-name">Infrastructure</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Terraform</span>
-        <span class="skill-tag">Docker</span>
-        <span class="skill-tag">Kubernetes</span>
-        <span class="skill-tag">ArgoCD</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-category">CI/CD & GitOps</div>
-      <div class="skill-name">Automation</div>
-      <div class="skill-tags">
-        <span class="skill-tag">GitHub Actions</span>
-        <span class="skill-tag">ArgoCD</span>
-        <span class="skill-tag">GitOps</span>
-        <span class="skill-tag">Bash</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-category">Observability</div>
-      <div class="skill-name">Monitoring</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Prometheus</span>
-        <span class="skill-tag">Grafana</span>
-        <span class="skill-tag">Trivy</span>
-        <span class="skill-tag">CloudWatch</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-category">Programming</div>
-      <div class="skill-name">Languages</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Python</span>
-        <span class="skill-tag">Bash</span>
-        <span class="skill-tag">FastAPI</span>
-        <span class="skill-tag">Flask</span>
-        <span class="skill-tag">Boto3</span>
-        <span class="skill-tag">Pandas</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-category">Systems</div>
-      <div class="skill-name">Environment</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Linux/Ubuntu</span>
-        <span class="skill-tag">WSL2</span>
-        <span class="skill-tag">Git</span>
-        <span class="skill-tag">VS Code</span>
-        <span class="skill-tag">AWS CLI</span>
-      </div>
-    </div>
+<div class="sw" id="skills">
+  <div class="sh reveal"><span class="snum">// 02</span><h2 class="stitle">Tech Stack</h2><div class="sline"></div></div>
+  <div class="skills-grid reveal">
+    <div class="skill-card"><div class="scat">Cloud</div><div class="sname">AWS</div><div class="tags"><span class="tag">EC2</span><span class="tag">S3</span><span class="tag">VPC</span><span class="tag">IAM</span><span class="tag">Lambda</span><span class="tag">CloudWatch</span><span class="tag">API Gateway</span></div></div>
+    <div class="skill-card"><div class="scat">IaC</div><div class="sname">Infrastructure as Code</div><div class="tags"><span class="tag">Terraform</span><span class="tag">Ansible</span><span class="tag">YAML</span><span class="tag">HCL</span></div></div>
+    <div class="skill-card"><div class="scat">Containers</div><div class="sname">Kubernetes & Docker</div><div class="tags"><span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag">Helm</span><span class="tag">Minikube</span><span class="tag">OpenShift</span></div></div>
+    <div class="skill-card"><div class="scat">CI/CD & GitOps</div><div class="sname">Pipelines</div><div class="tags"><span class="tag">GitHub Actions</span><span class="tag">ArgoCD</span><span class="tag">GitOps</span><span class="tag">Tekton</span></div></div>
+    <div class="skill-card"><div class="scat">Observability</div><div class="sname">Monitoring & Logging</div><div class="tags"><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">Elasticsearch</span><span class="tag">Logstash</span><span class="tag">Kibana</span><span class="tag">Trivy</span></div></div>
+    <div class="skill-card"><div class="scat">Programming</div><div class="sname">Languages & Frameworks</div><div class="tags"><span class="tag">Python</span><span class="tag">Bash</span><span class="tag">FastAPI</span><span class="tag">Flask</span><span class="tag">Boto3</span><span class="tag">Pandas</span></div></div>
   </div>
-</section>
+</div>
 
-<!-- Projects -->
-<section id="projects">
-  <div class="section-header">
-    <span class="section-num">02</span>
-    <h2 class="section-title">Projects</h2>
-    <div class="section-line"></div>
-  </div>
+<div class="divider"></div>
 
+<div class="sw" id="projects">
+  <div class="sh reveal"><span class="snum">// 03</span><h2 class="stitle">Projects</h2><div class="sline"></div></div>
   <div class="projects-grid">
-    <div class="project-card">
-      <span class="project-num">// 001</span>
-      <div class="project-title">AWS S3 + Terraform</div>
-      <p class="project-desc">Automated S3 bucket provisioning with Terraform — lifecycle policies, versioning, and IAM roles managed as code.</p>
-      <div class="project-stack">
-        <span class="stack-pill">Terraform</span>
-        <span class="stack-pill">AWS S3</span>
-        <span class="stack-pill">IAM</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 002</span>
-      <div class="project-title">Docker CI/CD + Monitoring</div>
-      <p class="project-desc">End-to-end pipeline with Docker containers, GitHub Actions CI/CD, Prometheus metrics scraping, and Grafana dashboards.</p>
-      <div class="project-stack">
-        <span class="stack-pill">Docker</span>
-        <span class="stack-pill">GitHub Actions</span>
-        <span class="stack-pill">Prometheus</span>
-        <span class="stack-pill">Grafana</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 003</span>
-      <div class="project-title">Kubernetes SRE Platform</div>
-      <p class="project-desc">SRE practices on K8s — HPA, PodDisruptionBudgets, readiness/liveness probes, and incident runbooks.</p>
-      <div class="project-stack">
-        <span class="stack-pill">Kubernetes</span>
-        <span class="stack-pill">SRE</span>
-        <span class="stack-pill">HPA</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 004</span>
-      <div class="project-title">AWS Cost Monitor CLI</div>
-      <p class="project-desc">Python CLI tool using Boto3 to track AWS spending across services, with alerts and cost breakdown reports.</p>
-      <div class="project-stack">
-        <span class="stack-pill">Python</span>
-        <span class="stack-pill">Boto3</span>
-        <span class="stack-pill">AWS Cost Explorer</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 005</span>
-      <div class="project-title">System Health Dashboard</div>
-      <p class="project-desc">Flask web app surfacing real-time CPU, memory, disk, and process metrics via psutil with live charts.</p>
-      <div class="project-stack">
-        <span class="stack-pill">Flask</span>
-        <span class="stack-pill">psutil</span>
-        <span class="stack-pill">Python</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 006</span>
-      <div class="project-title">Log Analyzer</div>
-      <p class="project-desc">Pandas-powered log parsing tool with Matplotlib visualizations for error rate trends and anomaly detection.</p>
-      <div class="project-stack">
-        <span class="stack-pill">Pandas</span>
-        <span class="stack-pill">Matplotlib</span>
-        <span class="stack-pill">Python</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 007</span>
-      <div class="project-title">Shell Scripts Automation</div>
-      <p class="project-desc">Bash script collection for server provisioning, backups, cron jobs, and system administration tasks.</p>
-      <div class="project-stack">
-        <span class="stack-pill">Bash</span>
-        <span class="stack-pill">Linux</span>
-        <span class="stack-pill">Cron</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 008</span>
-      <div class="project-title">FastAPI REST API</div>
-      <p class="project-desc">Production-ready REST API with FastAPI, async endpoints, Pydantic validation, and OpenAPI docs.</p>
-      <div class="project-stack">
-        <span class="stack-pill">FastAPI</span>
-        <span class="stack-pill">Python</span>
-        <span class="stack-pill">Pydantic</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 009</span>
-      <div class="project-title">DevSecOps Scanner</div>
-      <p class="project-desc">Automated container and IaC vulnerability scanning with Trivy integrated into GitHub Actions pipeline.</p>
-      <div class="project-stack">
-        <span class="stack-pill">Trivy</span>
-        <span class="stack-pill">DevSecOps</span>
-        <span class="stack-pill">GitHub Actions</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 010</span>
-      <div class="project-title">GitOps with ArgoCD</div>
-      <p class="project-desc">GitOps deployment model on Kubernetes using ArgoCD for declarative, Git-driven app delivery and sync.</p>
-      <div class="project-stack">
-        <span class="stack-pill">ArgoCD</span>
-        <span class="stack-pill">Kubernetes</span>
-        <span class="stack-pill">GitOps</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <span class="project-num">// 011</span>
-      <div class="project-title">Serverless AWS Lambda API</div>
-      <p class="project-desc">Event-driven serverless API using AWS Lambda, API Gateway, and IAM — zero server management.</p>
-      <div class="project-stack">
-        <span class="stack-pill">AWS Lambda</span>
-        <span class="stack-pill">API Gateway</span>
-        <span class="stack-pill">Serverless</span>
-      </div>
-    </div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">001</span><a href="https://github.com/prasad-sonar-code/devops-portfolio" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">DevOps Portfolio</div><p class="pdesc">Central portfolio repository documenting all DevOps projects with architecture diagrams, runbooks, and deployment guides.</p><div class="ps"><span class="pill">Markdown</span><span class="pill">GitHub</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">002</span><a href="https://github.com/prasad-sonar-code/aws-cost-monitor" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">AWS Cost Monitor CLI</div><p class="pdesc">Python CLI using Boto3 to track AWS spending across all services with cost breakdown reports and budget alerts.</p><div class="ps"><span class="pill">Python</span><span class="pill">Boto3</span><span class="pill">AWS Cost Explorer</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">003</span><a href="https://github.com/prasad-sonar-code/system-health-dashboard" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">System Health Dashboard</div><p class="pdesc">Flask web app surfacing real-time CPU, memory, disk, and process metrics via psutil with live auto-refreshing charts.</p><div class="ps"><span class="pill">Flask</span><span class="pill">psutil</span><span class="pill">Python</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">004</span><a href="https://github.com/prasad-sonar-code/log-analyzer" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">Log Analyzer</div><p class="pdesc">Pandas-powered log parsing tool with Matplotlib visualizations for error rate trends, anomaly detection, and incident summaries.</p><div class="ps"><span class="pill">Pandas</span><span class="pill">Matplotlib</span><span class="pill">Python</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">005</span><a href="https://github.com/prasad-sonar-code/shell-scripts" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">Shell Scripts Automation</div><p class="pdesc">Bash script collection for server provisioning, automated backups, cron job scheduling, and system administration tasks.</p><div class="ps"><span class="pill">Bash</span><span class="pill">Linux</span><span class="pill">Cron</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">006</span><a href="https://github.com/prasad-sonar-code/fastapi-rest-api" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">FastAPI REST API</div><p class="pdesc">Production-ready async REST API with FastAPI, Pydantic validation, OpenAPI docs, and containerized deployment.</p><div class="ps"><span class="pill">FastAPI</span><span class="pill">Python</span><span class="pill">Docker</span><span class="pill">Pydantic</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">007</span><a href="https://github.com/prasad-sonar-code/devsecops-scanner" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">DevSecOps Scanner</div><p class="pdesc">Automated container and IaC vulnerability scanning with Trivy integrated into GitHub Actions pipeline with SARIF reporting.</p><div class="ps"><span class="pill">Trivy</span><span class="pill">GitHub Actions</span><span class="pill">DevSecOps</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">008</span><a href="https://github.com/prasad-sonar-code/gitops-argocd" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">GitOps with ArgoCD</div><p class="pdesc">Declarative GitOps deployment on Kubernetes using ArgoCD — Git as single source of truth with automated sync and rollback.</p><div class="ps"><span class="pill">ArgoCD</span><span class="pill">Kubernetes</span><span class="pill">GitOps</span><span class="pill">Helm</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">009</span><a href="https://github.com/prasad-sonar-code/serverless-lambda" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">Serverless AWS Lambda API</div><p class="pdesc">Event-driven serverless API using AWS Lambda and API Gateway — zero server management, auto-scaling, pay-per-invocation.</p><div class="ps"><span class="pill">AWS Lambda</span><span class="pill">API Gateway</span><span class="pill">IAM</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">010</span><a href="https://github.com/prasad-sonar-code/elk-stack" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">ELK Stack</div><p class="pdesc">Centralized logging pipeline with Elasticsearch, Logstash, and Kibana — ingesting, parsing, indexing, and visualizing logs from multiple services.</p><div class="ps"><span class="pill">Elasticsearch</span><span class="pill">Logstash</span><span class="pill">Kibana</span><span class="pill">Docker</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">011</span><a href="https://github.com/prasad-sonar-code/ansible-automation" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">Ansible Automation</div><p class="pdesc">Ansible playbooks for automated server configuration, package management, user provisioning, and multi-host orchestration across Ubuntu instances.</p><div class="ps"><span class="pill">Ansible</span><span class="pill">YAML</span><span class="pill">Linux</span><span class="pill">SSH</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">012</span><a href="https://github.com/prasad-sonar-code/aws-vpc-terraform" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">AWS VPC Terraform</div><p class="pdesc">Full AWS VPC setup with Terraform — public/private subnets, NAT gateway, route tables, security groups, and internet gateway as reusable IaC modules.</p><div class="ps"><span class="pill">Terraform</span><span class="pill">AWS VPC</span><span class="pill">NAT Gateway</span><span class="pill">Subnets</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">013</span><a href="https://github.com/prasad-sonar-code/microservices-app" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">Microservices App</div><p class="pdesc">Containerized microservices architecture with service discovery, inter-service communication, and orchestrated deployment via Docker Compose and Kubernetes.</p><div class="ps"><span class="pill">Docker</span><span class="pill">Kubernetes</span><span class="pill">Docker Compose</span><span class="pill">GitHub Actions</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">014</span><a href="https://github.com/prasad-sonar-code/cloud-native-voting-app" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">Cloud Native Voting App</div><p class="pdesc">Microservices-based voting application deployed on Kubernetes with multi-container architecture, Redis caching, and persistent storage.</p><div class="ps"><span class="pill">Kubernetes</span><span class="pill">Docker</span><span class="pill">Redis</span><span class="pill">Microservices</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">015</span><a href="https://github.com/prasad-sonar-code" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">Docker CI/CD + Monitoring</div><p class="pdesc">End-to-end pipeline with Docker containers, GitHub Actions CI/CD, Prometheus metrics scraping, and Grafana dashboards for live observability.</p><div class="ps"><span class="pill">Docker</span><span class="pill">GitHub Actions</span><span class="pill">Prometheus</span><span class="pill">Grafana</span></div></div>
+    <div class="pc reveal"><div class="ph"><span class="pnum">016</span><a href="https://github.com/prasad-sonar-code" target="_blank" class="plink">GitHub ↗</a></div><div class="ptitle">Kubernetes SRE Platform</div><p class="pdesc">SRE practices on Kubernetes — HPA, PodDisruptionBudgets, readiness/liveness probes, resource quotas, and incident runbooks.</p><div class="ps"><span class="pill">Kubernetes</span><span class="pill">SRE</span><span class="pill">HPA</span><span class="pill">Prometheus</span></div></div>
   </div>
-</section>
+</div>
 
-<!-- Certs -->
-<section id="certs">
-  <div class="section-header">
-    <span class="section-num">03</span>
-    <h2 class="section-title">Certifications</h2>
-    <div class="section-line"></div>
+<div class="divider"></div>
+
+<div class="sw" id="certs">
+  <div class="sh reveal"><span class="snum">// 04</span><h2 class="stitle">Certifications</h2><div class="sline"></div></div>
+  <div class="certs-grid">
+    <div class="cc reveal"><div class="ci">📊</div><div><div class="cn">Prometheus Monitoring</div><div class="ciss">Observability Engineering</div></div></div>
+    <div class="cc reveal"><div class="ci">📈</div><div><div class="cn">Grafana Dashboards</div><div class="ciss">Data Visualization</div></div></div>
+    <div class="cc reveal"><div class="ci">☁️</div><div><div class="cn">Architecting on AWS</div><div class="ciss">Amazon Web Services</div></div></div>
+    <div class="cc reveal"><div class="ci">🐳</div><div><div class="cn">Docker / Kubernetes / OpenShift</div><div class="ciss">Container Orchestration</div></div></div>
+    <div class="cc reveal"><div class="ci">🐧</div><div><div class="cn">Linux Shell Scripting</div><div class="ciss">System Administration</div></div></div>
+    <div class="cc reveal"><div class="ci">🐍</div><div><div class="cn">Python Crash Course</div><div class="ciss">Programming Fundamentals</div></div></div>
   </div>
+</div>
 
-  <div class="certs-list">
-    <div class="cert-item">
-      <div class="cert-icon">📊</div>
-      <div>
-        <div class="cert-name">Prometheus Monitoring</div>
-        <div class="cert-issuer">Observability Engineering</div>
-      </div>
-    </div>
-    <div class="cert-item">
-      <div class="cert-icon">📈</div>
-      <div>
-        <div class="cert-name">Grafana Dashboards</div>
-        <div class="cert-issuer">Data Visualization</div>
-      </div>
-    </div>
-    <div class="cert-item">
-      <div class="cert-icon">☁️</div>
-      <div>
-        <div class="cert-name">Architecting on AWS</div>
-        <div class="cert-issuer">Amazon Web Services</div>
-      </div>
-    </div>
-    <div class="cert-item">
-      <div class="cert-icon">🐳</div>
-      <div>
-        <div class="cert-name">Docker / Kubernetes / OpenShift</div>
-        <div class="cert-issuer">Container Orchestration</div>
-      </div>
-    </div>
-    <div class="cert-item">
-      <div class="cert-icon">🐧</div>
-      <div>
-        <div class="cert-name">Linux Shell Scripting</div>
-        <div class="cert-issuer">System Administration</div>
-      </div>
-    </div>
-    <div class="cert-item">
-      <div class="cert-icon">🐍</div>
-      <div>
-        <div class="cert-name">Python Crash Course</div>
-        <div class="cert-issuer">Programming Fundamentals</div>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="divider"></div>
 
-<!-- Contact -->
-<section id="contact">
+<div class="sw" id="contact">
   <div class="contact-grid">
-    <div class="contact-text">
-      <div class="section-header">
-        <span class="section-num">04</span>
-        <h2 class="section-title">Contact</h2>
-        <div class="section-line"></div>
-      </div>
-      <h2>Let's build<br>something<br>together.</h2>
-      <p style="margin-top:1.25rem;">Open to DevOps and SRE internship opportunities. I bring hands-on experience across the full infrastructure lifecycle.</p>
+    <div class="reveal">
+      <div class="sh" style="margin-bottom:2rem;"><span class="snum">// 05</span><h2 class="stitle">Contact</h2><div class="sline"></div></div>
+      <div class="ch">Let's build<br>something<br><span>great.</span></div>
+      <p class="csub">Open to DevOps and SRE internship opportunities across India. I bring hands-on experience across the full infrastructure lifecycle and a systems engineer's mindset.</p>
+      <a href="mailto:prasadsonar030@gmail.com" class="btn btn-accent">Send me an email →</a>
     </div>
-    <div class="contact-links">
-      <a href="mailto:prasadsonar030@gmail.com" class="contact-link">
-        <div class="contact-link-icon">✉</div>
-        <div class="contact-link-info">
-          <span class="contact-link-label">Email</span>
-          <span class="contact-link-value">prasadsonar030@gmail.com</span>
-        </div>
-        <span class="contact-link-arrow">→</span>
-      </a>
-      <a href="tel:+917709032166" class="contact-link">
-        <div class="contact-link-icon">☎</div>
-        <div class="contact-link-info">
-          <span class="contact-link-label">Phone</span>
-          <span class="contact-link-value">+91 77090 32166</span>
-        </div>
-        <span class="contact-link-arrow">→</span>
-      </a>
-      <a href="https://linkedin.com/in/prasad-sonar-ps454" target="_blank" class="contact-link">
-        <div class="contact-link-icon">in</div>
-        <div class="contact-link-info">
-          <span class="contact-link-label">LinkedIn</span>
-          <span class="contact-link-value">prasad-sonar-ps454</span>
-        </div>
-        <span class="contact-link-arrow">→</span>
-      </a>
-      <a href="https://github.com/prasad-sonar-code" target="_blank" class="contact-link">
-        <div class="contact-link-icon">gh</div>
-        <div class="contact-link-info">
-          <span class="contact-link-label">GitHub</span>
-          <span class="contact-link-value">prasad-sonar-code</span>
-        </div>
-        <span class="contact-link-arrow">→</span>
-      </a>
+    <div class="clinks reveal">
+      <a href="mailto:prasadsonar030@gmail.com" class="clink"><div class="cicon">✉</div><div><span class="clbl">Email</span><span class="cval">prasadsonar030@gmail.com</span></div><span class="carr">→</span></a>
+      <a href="tel:+917709032166" class="clink"><div class="cicon">☎</div><div><span class="clbl">Phone</span><span class="cval">+91 77090 32166</span></div><span class="carr">→</span></a>
+      <a href="https://linkedin.com/in/prasad-sonar-ps454" target="_blank" class="clink"><div class="cicon">in</div><div><span class="clbl">LinkedIn</span><span class="cval">prasad-sonar-ps454</span></div><span class="carr">→</span></a>
+      <a href="https://github.com/prasad-sonar-code" target="_blank" class="clink"><div class="cicon">gh</div><div><span class="clbl">GitHub</span><span class="cval">prasad-sonar-code</span></div><span class="carr">→</span></a>
     </div>
   </div>
-</section>
+</div>
 
 <footer>
-  <div class="footer-left">© 2025 Prasad Sonar — Dhule, Maharashtra</div>
-  <div class="footer-right">Gangamai College of Engineering · <span>E.E. Year 2</span></div>
+  <div class="fl">© 2025 Prasad Sonar · Dhule, Maharashtra, India</div>
+  <div class="fr">Gangamai College of Engineering · <span>B.E. Electrical · Year 2</span></div>
 </footer>
 
 <script>
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  const blob = document.getElementById('glowBlob');
-
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
-    blob.style.transform = `translate(${mx - 250}px, ${my - 250}px)`;
-  });
-
-  function animRing() {
-    rx += (mx - rx) * 0.15;
-    ry += (my - ry) * 0.15;
-    ring.style.transform = `translate(${rx - 14}px, ${ry - 14}px)`;
-    requestAnimationFrame(animRing);
-  }
-  animRing();
-
-  document.querySelectorAll('a, button, .project-card, .skill-card, .cert-item').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      ring.style.width = '42px'; ring.style.height = '42px';
-      cursor.style.transform += ' scale(0.5)';
-    });
-    el.addEventListener('mouseleave', () => {
-      ring.style.width = '28px'; ring.style.height = '28px';
-    });
-  });
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+const orb = document.getElementById('orb');
+let mx = window.innerWidth/2, my = window.innerHeight/2, rx = mx, ry = my;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx+'px'; cur.style.top = my+'px';
+  orb.style.left = mx+'px'; orb.style.top = my+'px';
+});
+(function animRing(){
+  rx += (mx-rx)*.12; ry += (my-ry)*.12;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a,.pc,.skill-card,.cc').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='44px';ring.style.height='44px';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='30px';ring.style.height='30px';});
+});
+const roles=['DevOps Engineer','SRE Engineer','Cloud Engineer','Platform Engineer'];
+let ri=0,ci=0,del=false;
+const tel=document.getElementById('typed');
+const tc=document.getElementById('tcur');
+setInterval(()=>{tc.style.opacity=tc.style.opacity==='0'?'1':'0';},530);
+function type(){
+  const w=roles[ri];
+  if(!del){tel.textContent=w.slice(0,++ci);if(ci===w.length){del=true;setTimeout(type,1900);return;}}
+  else{tel.textContent=w.slice(0,--ci);if(ci===0){del=false;ri=(ri+1)%roles.length;}}
+  setTimeout(type,del?55:90);
+}
+type();
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+document.getElementById('resumeBtn').addEventListener('click',e=>{
+  e.preventDefault();
+  alert('Add your resume PDF to the repo root as resume.pdf, then update this button\'s href to ./resume.pdf');
+});
 </script>
 </body>
 </html>
